@@ -8,10 +8,14 @@ class iBus:
             )
         self.buffer = bytearray()
         self.channels = [0]*14  # iBUS typically supports 14 channels
+        try:
+            self.ser.open()
+        except Exception as error:
+            print ("\n\nError opening iBUS"+self.ser.port+" port.\n"+str(error)+"\n\n")
 
     def read_packet(self, checksum = True):
         """Read data from serial port and process when a full packet is available"""
-        if self.ser.in_waiting:
+        if self.ser.in_waiting and self.ser.is_open:
             # Read available bytes
             data = self.ser.read(self.ser.in_waiting)
             self.buffer.extend(data)
@@ -59,6 +63,6 @@ class iBus:
                 return self.channels
             time.sleep(0.01)
     
-    def close(self):
+    def __del__(self):
         """Close the serial connection"""
         self.ser.close()

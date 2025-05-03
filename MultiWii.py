@@ -327,10 +327,7 @@ class MultiWii:
                     if datalength > 1:
                         payload = data
                         #idk how this works but see the difference in raw payloads to find what byte determines what
-                        '''self.modes["arm"] = bool(payload[20] & 0x02)    # Byte 20 bit 1
-                        self.modes["angle"] = bool(payload[6] & 0x02)
-                        
-                        return self.modes'''
+
                         cycle_time = int.from_bytes(payload[0:2], byteorder='little')  # us
                         i2c_errors = int.from_bytes(payload[2:4], byteorder='little')
                         sensors = int.from_bytes(payload[4:6], byteorder='little')
@@ -509,3 +506,4 @@ class MultiWii:
                 return "No return error!"
         except Exception as error:
             print (error)
+

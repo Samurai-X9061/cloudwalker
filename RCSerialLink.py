@@ -4,18 +4,20 @@ class iBus:
         self.ser = serial.Serial(
             port = serPort,
             baudrate = 115200,
-            timeout = 1,
+            timeout = 0.1,
             )
         self.buffer = bytearray()
         self.channels = [0]*14  # iBUS typically supports 14 channels
         try:
-            self.ser.open()
+            if not self.ser.is_open:
+                self.ser.open()
         except Exception as error:
             print ("\n\nError opening iBUS"+self.ser.port+" port.\n"+str(error)+"\n\n")
 
     def read_packet(self, checksum = True):
         """Read data from serial port and process when a full packet is available"""
         if self.ser.in_waiting and self.ser.is_open:
+            
             # Read available bytes
             data = self.ser.read(self.ser.in_waiting)
             self.buffer.extend(data)
@@ -33,7 +35,7 @@ class iBus:
                 
                 # Extract the packet
                 packet = self.buffer[:32]
-                self.buffer = self.buffer[32:]
+                self.buffer = bytearray()
                 
                 # Verify checksum
                 if not checksum or self._verify_checksum(packet):
@@ -59,6 +61,7 @@ class iBus:
     def get_channels(self):
         """Return the current channel values"""
         while True:
+            #print(self.read_packet())
             if self.read_packet():
                 return self.channels
             time.sleep(0.01)

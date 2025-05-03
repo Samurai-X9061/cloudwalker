@@ -318,7 +318,7 @@ class MultiWii:
                         print(len(data))
                         temp = struct.unpack('<BHHhH', data)
                         print(data)
-                        self.analog['voltage'] = temp[4]
+                        self.analog['voltage'] = temp[4]/100
                         self.analog['mahDrawn'] = temp[1]
                         self.analog['current'] = temp[3]/100
                         self.analog['rssi'] = temp[2]*100/1023

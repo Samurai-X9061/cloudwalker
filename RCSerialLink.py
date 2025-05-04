@@ -1,4 +1,5 @@
 import serial, time 
+
 class iBus:
     def __init__(self,serPort):
         self.ser = serial.Serial(
@@ -23,7 +24,7 @@ class iBus:
             self.buffer.extend(data)
             
             # Process buffer for packets
-            while len(self.buffer) >= 32:  # iBUS packet is 32 bytes (header + 30 data bytes + checksum)
+            while len(self.buffer) >= 32:  # iBUS packet is 32 bytes (2 header + 28 data bytes + 2 checksum)
                 # Look for the header byte (0x20)
                 if self.buffer[0] != 0x20:
                     self.buffer.pop(0)
@@ -64,7 +65,7 @@ class iBus:
             #print(self.read_packet())
             if self.read_packet():
                 return self.channels
-            time.sleep(0.01)
+            time.sleep(0.001)
     
     def __del__(self):
         """Close the serial connection"""

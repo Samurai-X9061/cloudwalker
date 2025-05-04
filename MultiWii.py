@@ -406,6 +406,7 @@ class MultiWii:
                     return "No return error!"
             except Exception as error:
                 print (error)
+                time.sleep(0.001)
                 continue
             
 

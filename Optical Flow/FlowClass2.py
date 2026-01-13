@@ -3,7 +3,7 @@ import numpy as np
 import time
 
 
-class OpticalFlowPX4:
+class OpticalFlowLK:
     def __init__(
         self,
         cam_index=0,
@@ -179,3 +179,4 @@ class OpticalFlowPX4:
 
     def release(self):
         self.cap.release()
+
